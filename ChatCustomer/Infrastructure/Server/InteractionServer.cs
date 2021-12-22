@@ -9,8 +9,20 @@ using Newtonsoft.Json;
 
 namespace ChatCustomer.Infrastructure.Server
 {
+    /// <summary>
+    /// Класс отвечающий за взаимодействие с сервером
+    /// </summary>
     class InteractionServer
     {
+        string urlServer = "http://localhost:19028";
+
+        /// <summary>
+        /// Загрузка сообщений с сервера
+        /// </summary>
+        /// <param name="filterDate"> Нужна ли сортировка по дате. true нажна, false не нужна  </param>
+        /// <param name="startDate"> С какой даты нужно найти сообщение </param>
+        /// <param name="endDate"> По какую дату нужно найти сообщение. При передаче null будут получены сообщения чья дата равна startDate </param>
+        /// <returns></returns>
         public List<Messege> LoadMesseges(bool filterDate, DateTime? startDate, DateTime? endDate)
         {
             try
@@ -22,7 +34,7 @@ namespace ChatCustomer.Infrastructure.Server
 
                 List<Messege> messeges = new List<Messege>();
 
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:19028/ChatUsers/GetMessage");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(urlServer+"/ChatUsers/GetMessage");
                 httpWebRequest.ContentType = "text/json";
                 httpWebRequest.Method = "POST";
 
@@ -51,7 +63,13 @@ namespace ChatCustomer.Infrastructure.Server
 
             return null;
         }
-
+        /// <summary>
+        /// Отправка сообщений на сервер
+        /// </summary>
+        /// <param name="userName"> Имя пользователя</param>
+        /// <param name="dateTimeMessege"> Текущая дата и время </param>
+        /// <param name="textMessege"> Текст сообщения. Если текст сообщения пустой, сообщение не отправиться </param>
+        /// <returns></returns>
         public Messege SendMesseges(string userName, DateTime dateTimeMessege, string textMessege)
         {
             try
@@ -64,7 +82,7 @@ namespace ChatCustomer.Infrastructure.Server
                     messege.NameUser = userName;
                     messege.Messeges = textMessege;
 
-                    var httpWebRequest = WebRequest.Create("http://localhost:19028/ChatUsers/SendMessege");
+                    var httpWebRequest = WebRequest.Create(urlServer+"/ChatUsers/SendMessege");
                     httpWebRequest.Method = "POST";
                     httpWebRequest.ContentType = "application/json";
 
