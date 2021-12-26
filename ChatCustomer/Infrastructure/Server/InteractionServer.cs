@@ -6,6 +6,7 @@ using SysJson = System.Text.Json;
 using System.Windows;
 using ChatCustomer.Model;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace ChatCustomer.Infrastructure.Server
 {
@@ -63,6 +64,52 @@ namespace ChatCustomer.Infrastructure.Server
 
             return null;
         }
+
+        /// <summary>
+        /// Перегружаемый метод для загрузки всех сообщений без фильтра
+        /// </summary>
+        /// <returns></returns>
+        public List<Messege> LoadMesseges()
+        {
+            try
+            {
+                FilterMassege filterMassege = new FilterMassege();
+                filterMassege.Filter = false;
+                filterMassege.DateStart = new DateTime();
+                filterMassege.DateEnd = new DateTime();
+
+                List<Messege> messeges = new List<Messege>();
+
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(urlServer + "/ChatUsers/GetMessage");
+                httpWebRequest.ContentType = "text/json";
+                httpWebRequest.Method = "POST";
+
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    string json = SysJson.JsonSerializer.Serialize(filterMassege);
+
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    //ответ от сервера
+                    var result = streamReader.ReadToEnd();
+
+                    //Сериализация
+                    messeges = JsonConvert.DeserializeObject<List<Messege>>(result);
+                }
+                return messeges;
+
+            }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+
+            return null;
+        }
+
         /// <summary>
         /// Отправка сообщений на сервер
         /// </summary>
@@ -80,7 +127,7 @@ namespace ChatCustomer.Infrastructure.Server
 
                     messege.DateTimeMessege = dateTimeMessege;
                     messege.NameUser = userName;
-                    messege.Messeges = textMessege;
+                    messege.MessegeText = textMessege;
 
                     var httpWebRequest = WebRequest.Create(urlServer+"/ChatUsers/SendMessege");
                     httpWebRequest.Method = "POST";

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Net;
 using System.IO;
-
+using ChatCustomer.ViewModel;
 using ChatCustomer.Model;
 using System.Windows.Input;
 using ChatCustomer.Infrastructure.Server;
@@ -19,6 +19,8 @@ namespace ChatCustomer
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new ApplicationViewModel();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -31,7 +33,7 @@ namespace ChatCustomer
             DtPckrStart.IsEnabled = false;
             DtPckrEnd.IsEnabled = false;
 
-            LoadMesseges();
+           // LoadMesseges();
         }
 
         private void BtnSendMessege_Click(object sender, RoutedEventArgs e)
