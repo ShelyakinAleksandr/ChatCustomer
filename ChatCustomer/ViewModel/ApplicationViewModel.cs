@@ -17,6 +17,7 @@ namespace ChatCustomer.ViewModel
 
         private RelayCommand addCommand;
         private RelayCommand loadCommand;
+        private RelayCommand findMessege;
 
         public ApplicationViewModel()
         {
@@ -64,7 +65,23 @@ namespace ChatCustomer.ViewModel
                     }));
             }
         }
-        
+
+        public RelayCommand FindMessege
+        {
+            get
+            {
+                return findMessege ??
+                    (findMessege = new RelayCommand(obj =>
+                    {
+                        FilterMassege mes = obj as FilterMassege;
+
+                        AllMesseges.Clear();
+
+                        foreach (Messege messege in InteractionServer.FindMesseges(mes))
+                            AllMesseges.Add(messege);
+                    }));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

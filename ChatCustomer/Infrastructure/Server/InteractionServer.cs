@@ -24,15 +24,10 @@ namespace ChatCustomer.Infrastructure.Server
         /// <param name="startDate"> С какой даты нужно найти сообщение </param>
         /// <param name="endDate"> По какую дату нужно найти сообщение. При передаче null будут получены сообщения чья дата равна startDate </param>
         /// <returns></returns>
-        public List<Messege> LoadMesseges(bool filterDate, DateTime? startDate, DateTime? endDate)
+        public List<Messege> FindMesseges(FilterMassege filterMassege)
         {
             try
             {
-                FilterMassege filterMassege = new FilterMassege();
-                filterMassege.Filter = filterDate;
-                filterMassege.DateStart = Convert.ToDateTime(startDate);
-                filterMassege.DateEnd = Convert.ToDateTime(endDate);
-
                 List<Messege> messeges = new List<Messege>();
 
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(urlServer+"/ChatUsers/GetMessage");
@@ -66,7 +61,7 @@ namespace ChatCustomer.Infrastructure.Server
         }
 
         /// <summary>
-        /// Перегружаемый метод для загрузки всех сообщений без фильтра
+        /// загрузки всех сообщений без фильтра
         /// </summary>
         /// <returns></returns>
         public List<Messege> LoadMesseges()

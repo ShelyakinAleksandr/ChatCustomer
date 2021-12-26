@@ -33,21 +33,6 @@ namespace ChatCustomer
             DtPckrStart.IsEnabled = false;
             DtPckrEnd.IsEnabled = false;
 
-           // LoadMesseges();
-        }
-
-        private void BtnSendMessege_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-               Messege messege = InteractionServer.SendMesseges("Пользовател", DateTime.Now, TxtBxMessege.Text);
-
-                if (null != messege)
-                    LstBxChat.Items.Add(messege);
-                else
-                    TxtBxMessege.ToolTip = "Введите текст сообщения";
-            }
-            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
 
         private void TxtBxMessege_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -56,20 +41,6 @@ namespace ChatCustomer
             {
                 e.Handled = true;
             }
-        }
-
-        void LoadMesseges()
-        {
-            try
-            {
-                foreach (Messege messege in InteractionServer.LoadMesseges(Convert.ToBoolean(ChckBxFilter.IsChecked),
-                                                                            DtPckrStart.SelectedDate,
-                                                                            DtPckrEnd.SelectedDate))
-                    LstBxChat.Items.Add(messege);
-
-                BtnConectionServer.IsEnabled = false;
-            }
-            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
@@ -99,16 +70,6 @@ namespace ChatCustomer
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
 
-        private void BtnFindMessage_Click(object sender, RoutedEventArgs e)
-        {
-            LstBxChat.Items.Clear();
-
-            foreach (Messege messege in InteractionServer.LoadMesseges(Convert.ToBoolean(ChckBxFilter.IsChecked),
-                                                                           DtPckrStart.SelectedDate,
-                                                                           DtPckrEnd.SelectedDate))
-                LstBxChat.Items.Add(messege);
-        }
-
         private void RdBtnDateEquals_Checked(object sender, RoutedEventArgs e)
         {
             DtPckrEnd.IsEnabled = false;
@@ -118,11 +79,6 @@ namespace ChatCustomer
         private void RdBtnDateRange_Checked(object sender, RoutedEventArgs e)
         {
             DtPckrEnd.IsEnabled = true;
-        }
-
-        private void BtnConectionServer_Click_1(object sender, RoutedEventArgs e)
-        {
-            LoadMesseges();
         }
     }
 }

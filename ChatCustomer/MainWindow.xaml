@@ -4,8 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatCustomer"
+        xmlns:dir="clr-namespace:ChatCustomer.Comm"
         mc:Ignorable="d"
         Title="MainWindow" Height="430" Width="557" FontFamily="Verdana" FontSize="14" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <dir:ConverterCommandParametrs x:Key="Converter"/>
+    </Window.Resources>
+    
     <Grid>
         <TextBox x:Name="TxtBxMessege" HorizontalAlignment="Left" Margin="10,0,0,43" TextWrapping="Wrap" Width="297" Height="36" VerticalAlignment="Bottom" PreviewKeyDown="TxtBxMessege_PreviewKeyDown"/>
 
@@ -47,8 +53,17 @@
         <Label x:Name="LblDate" Content="Дата" HorizontalAlignment="Left" Margin="99,34,0,0" VerticalAlignment="Top" Width="45"/>
         <DatePicker x:Name="DtPckrStart" HorizontalAlignment="Left" Margin="155,35,0,0" VerticalAlignment="Top"/>
         <DatePicker x:Name="DtPckrEnd" HorizontalAlignment="Left" Margin="289,35,0,0" VerticalAlignment="Top"/>
-        
-        <Button x:Name="BtnFindMessage" Content="поиск" HorizontalAlignment="Left" Margin="10,16,0,0" VerticalAlignment="Top" Height="37" Width="57" />
+
+        <Button x:Name="BtnFindMessage" Content="поиск" HorizontalAlignment="Left" Margin="10,16,0,0" VerticalAlignment="Top" Height="37" Width="57" 
+                Command="{Binding FindMessege}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource Converter}">
+                    <Binding Path="IsChecked"  ElementName="ChckBxFilter" />
+                    <Binding Path="SelectedDate"  ElementName="DtPckrStart" />
+                    <Binding Path="SelectedDate"  ElementName="DtPckrEnd" />
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
 
     </Grid>
 </Window>

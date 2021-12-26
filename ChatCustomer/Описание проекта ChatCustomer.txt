@@ -1,5 +1,6 @@
 ChatCustomer 2-я часть проекта
 desktop Приложение WPF платформа .net Core 3.1
+реализован патерн MVVM
 
 Используемые библиотеки Newtonsoft.Json
 
